@@ -62,11 +62,12 @@ async def delete_book(book_id: int) -> None:
     return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content=None)
 
 
-# Add the new endpoint to retrieve a book by its ID
 @router.get("/{book_id}", response_model=Book, status_code=status.HTTP_200_OK)
 async def get_book_by_id(book_id: int) -> Book:
-    book = db.get_book(book_id)  # Use the existing get_book method
+    print(f"Fetching book with ID: {book_id}")  # Debugging
+    book = db.get_book(book_id)
     if book is None:
+        print(f"Book with ID {book_id} not found")  # Debugging
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Book not found",
