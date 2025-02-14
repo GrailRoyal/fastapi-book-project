@@ -25,13 +25,13 @@ jobs:
       - name: Build Docker image
         run: docker build -t fastapi-app .
 
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: 34.228.54.56  # Your EC2 instance IP
-          username: ubuntu    # Your EC2 instance username
-          key: secrets.SSH_PRIVATE_KEY  # Your SSH private key
-          script: |
-            cd /home/ubuntu/fastapi-book-project  # Replace with your project path
-            git pull origin main
-            docker-compose up -d --build
+      - - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}  # Replace with your server IP
+        username: ${{ secrets.SSH_USERNAME }}  # Replace with your server username
+        key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use the private key
+        script: |
+          cd /home/ubuntu/fastapi-book-project  # Replace with your project path
+          git pull origin main
+          docker-compose up -d --build
